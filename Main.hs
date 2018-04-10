@@ -1,8 +1,9 @@
 module Main where
 import Numeric
+import IdMonad (M, unitM, bindM)
 
 main :: IO ()
-main = putStrLn $ test term0
+main = putStrLn $ "Output is: " ++ test term0
 
 
 type  Name = String
@@ -20,16 +21,13 @@ data Value =  Wrong
 type  Environment =  [(Name, Value)]
 
 
+showM a = showval a
+
 showval :: Value -> String
 showval Wrong =  "<wrong>"
 showval (Num i) =  show i
 showval (Fun f) =  "<function>"
 
-
-type M a = a
-unitM a = a
-a `bindM` k = k a
-showM a = showval a
 
 
 interp :: Term -> Environment -> M Value
