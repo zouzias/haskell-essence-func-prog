@@ -1,6 +1,7 @@
 module Main where
 import Numeric
 import IdMonad (M, unitM, bindM)
+-- import ErrorMonad (M, unitM, bindM, M(Success), M(Error))
 
 main :: IO ()
 main = putStrLn $ "Output is: " ++ test term0
@@ -21,13 +22,17 @@ data Value =  Wrong
 type  Environment =  [(Name, Value)]
 
 
-showM a = showval a
-
 showval :: Value -> String
 showval Wrong =  "<wrong>"
 showval (Num i) =  show i
 showval (Fun f) =  "<function>"
 
+-- Show for IdMonad
+showM a = showval a
+
+-- Show for ErrorMonad
+-- showM (Success a) = "Success: " ++ showval a
+-- showM (Error s) = "Error: " ++ s
 
 
 interp :: Term -> Environment -> M Value
