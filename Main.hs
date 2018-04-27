@@ -3,8 +3,9 @@ import Numeric
 import ErrorMonad (E, unitE, bindE, errorE, E(Success), E(Error))
 
 main :: IO ()
-main = putStrLn $ "Output is: " ++ test term0
--- main = putStrLn $ "Output is: " ++ test termError
+main = do
+        putStrLn $ "Output is: " ++ test term0
+        putStrLn $ "Output is: " ++ test term1
 
 
 type  Name = String
@@ -51,12 +52,12 @@ llookup x ((y, b):e) =  if  x==y  then  unitE b  else  llookup x e
 
 add :: Value -> Value -> E Value
 add (Num i) (Num j) =  unitE (Num (i + j))
-add a b =  errorE ("should be numbers" ++ showval a
+add a b =  errorE ("should be numbers: " ++ showval a
                                        ++ "," ++ showval b)
 
 apply :: Value -> Value -> E Value
 apply (Fun k) a = k a
-apply f a = errorE ("should be function" ++ showval f)
+apply f a = errorE ("should be function: " ++ showval f)
 
 test :: Term -> String
 test t =  showE (interp t [])
@@ -64,3 +65,5 @@ test t =  showE (interp t [])
 
 term0 = (App (Lam "x" (Add (Var "x") (Var "x")))
                    (Add (Con 10) (Con 11)))
+
+term1 = (App (Con 1) (Con 2))
