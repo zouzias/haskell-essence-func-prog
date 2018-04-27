@@ -38,11 +38,10 @@ interp (Var x) e =  llookup x e
 interp (Con i) e =  unitE (Num i)
 interp (Add u v) e =  interp u e `bindE` (\a ->
                      interp v e `bindE` (\b ->
-                     add a b))
+                     add a))
 interp (Lam x  v) e = unitE (Fun (\a -> interp v ((x, a):e)))
 interp (App t u) e = interp t e `bindE` (\f ->
-                                    interp u e `bindE` (\a ->
-                                    apply f a))
+                                    interp u e `bindE` apply f)
 
 
 llookup :: Name -> Environment -> E Value
@@ -63,7 +62,7 @@ test :: Term -> String
 test t =  showE (interp t [])
 
 
-term0 = (App (Lam "x" (Add (Var "x") (Var "x")))
-                   (Add (Con 10) (Con 11)))
+term0 = App (Lam "x" (Add (Var "x") (Var "x")))
+                   (Add (Con 10) (Con 11))
 
-term1 = (App (Con 1) (Con 2))
+term1 = App (Con 1) (Con 2)
