@@ -1,8 +1,8 @@
 module ErrorMonad where
 
-data M a = Success a | Error String
-unitM a = Success a
-errorM s = Error s
+data E a = Success a | Error String
+unitE a = Success a
+errorE s = Error s
 
-bindM (Success a) k = k a
-bindM (Error s) k = Error s
+bindE (Success a) k = k a
+bindE (Error s) k = Error s
