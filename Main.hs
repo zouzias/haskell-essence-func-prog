@@ -37,8 +37,7 @@ interp :: Term -> Environment -> E Value
 interp (Var x) e =  llookup x e
 interp (Con i) e =  unitE (Num i)
 interp (Add u v) e =  interp u e `bindE` (\a ->
-                     interp v e `bindE` (\b ->
-                     add a))
+                     interp v e `bindE` add a)
 interp (Lam x  v) e = unitE (Fun (\a -> interp v ((x, a):e)))
 interp (App t u) e = interp t e `bindE` (\f ->
                                     interp u e `bindE` apply f)
