@@ -36,12 +36,10 @@ interp :: Term -> Environment -> P Value
 interp (Var x) e =  llookup x e
 interp (Con i) e =  unitP (Num i)
 interp (Add u v) e =  interp u e `bindP` (\a ->
-                     interp v e `bindP` (\b ->
-                     add a b))
+                     interp v e `bindP` add a)
 interp (Lam x  v) e = unitP (Fun (\a -> interp v ((x, a):e)))
 interp (App t u) e = interp t e `bindP` (\f ->
-                                    interp u e `bindP` (\a ->
-                                    apply f a))
+                                    interp u e `bindP` apply f)
 
 -- For at terms
 interp (At p t ) e = resetP p (interp t e)
@@ -65,7 +63,7 @@ test :: Term -> String
 test t =  showP (interp t [])
 
 
-term0 = (App (Lam "x" (Add (Var "x") (Var "x")))
-                   (Add (Con 10) (Con 11)))
+term0 = App (Lam "x" (Add (Var "x") (Var "x")))
+                   (Add (Con 10) (Con 11))
 
-term1 = (App (Con 1) (Con 2))
+term1 = App (Con 1) (Con 2)
