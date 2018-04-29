@@ -1,5 +1,5 @@
 language: haskell
 ghc:
   - "8.2.2"
-install: cabal update && cabal install hlint
+install: cabal update
 script: cabal build && cabal test
